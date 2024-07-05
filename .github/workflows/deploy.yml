@@ -1,7 +1,7 @@
 name: Deploy static files to site
 
 on:
-  workflow_dispacth:
+  workflow_dispatch:
 
 env:
   AWS_REGION: us-west-2
