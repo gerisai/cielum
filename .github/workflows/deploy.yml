@@ -5,7 +5,6 @@ on:
 
 env:
   AWS_REGION: us-west-2
-  AWS_ROLE: gh-runner
   BUCKET_NAME: cielum-static-site
 
 jobs:
@@ -21,7 +20,6 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-region: ${{ env.AWS_REGION }}
-          role-to-assume: ${{ env.AWS_ROLE }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key	: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
