@@ -1,8 +1,10 @@
 data "aws_iam_policy_document" "cielum_bucket_policy" {
   statement {
+    sid = "CielumAllowCloudFront"
+
     principals {
-      type        = "*"
-      identifiers = ["*"]
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
     }
 
     actions = [
@@ -12,5 +14,11 @@ data "aws_iam_policy_document" "cielum_bucket_policy" {
     resources = [
       "${aws_s3_bucket.cielum_bucket.arn}/*",
     ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [aws_cloudfront_distribution.cielum_cf_distribution.arn]
+    }
   }
 }

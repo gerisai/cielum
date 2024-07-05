@@ -18,3 +18,8 @@ terraform {
 provider "aws" {
   region = "us-west-2"
 }
+
+provider "aws" { # required for ACM
+  alias  = "east" 
+  region = "us-east-1"
+}

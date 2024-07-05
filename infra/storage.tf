@@ -1,11 +1,9 @@
 resource "aws_s3_bucket" "cielum_bucket" {
   bucket = "cielum-static-site"
 
-  tags = {
-    Name        = "cielum-static-site"
-    Environment = "Production"
-    App         = "Cielum"
-  }
+  tags = merge({
+    Name = "cielum-static-site"
+  }, local.tags)
 }
 
 resource "aws_s3_bucket_ownership_controls" "cielum_bucket_owner" {
@@ -18,13 +16,13 @@ resource "aws_s3_bucket_ownership_controls" "cielum_bucket_owner" {
 resource "aws_s3_bucket_public_access_block" "cielum_public_access_block" {
   bucket = aws_s3_bucket.cielum_bucket.id
 
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
-resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
+resource "aws_s3_bucket_policy" "cielum_cf_access" {
   bucket = aws_s3_bucket.cielum_bucket.id
   policy = data.aws_iam_policy_document.cielum_bucket_policy.json
 }
