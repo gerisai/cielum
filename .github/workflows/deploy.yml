@@ -23,7 +23,10 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key	: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Push static files to S3 bucket
+      - name: Push changed static files to S3 bucket
         id: s3-push
         run: |
-          aws s3 sync ./site/ s3://${{ env.BUCKET_NAME }}
+          CHANGED_FILES=$(git diff HEAD^..HEAD --name-only)
+          for FILE in $CHANGED_FILES; do
+            aws s3 cp $FILE s3://${{ env.BUCKET_NAME }}
+          done
