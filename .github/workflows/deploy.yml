@@ -26,7 +26,8 @@ jobs:
       - name: Push changed static files to S3 bucket
         id: s3-push
         run: |
-          CHANGED_FILES=$(git diff HEAD^ --name-only)
+          LAST_COMIT=$(git rev-parse HEAD~1)
+          CHANGED_FILES=$(git diff HEAD $LAST_COMIT --name-only)
           for FILE in $CHANGED_FILES; do
             aws s3 cp $FILE s3://${{ env.BUCKET_NAME }}
           done
